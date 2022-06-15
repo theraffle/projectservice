@@ -70,7 +70,7 @@ func (p ProjectService) GetProject(ctx context.Context, request *pb.GetProjectRe
 	query := fmt.Sprintf("SELECT * FROM project WHERE id = %d", request.ProjectID)
 	row := db.QueryRowContext(ctx, query)
 
-	response := &pb.GetProjectResponse{}
+	response := &pb.GetProjectResponse{Project: &pb.Project{}}
 	err = row.Scan(&response.Project.ProjectID, &response.Project.ProjectName, &response.Project.ChainID, &response.Project.RaffleContract)
 
 	if err != nil {
@@ -103,7 +103,7 @@ func (p ProjectService) GetAllProjects(ctx context.Context, _ *pb.Empty) (*pb.Ge
 	}
 	var projects []*pb.Project
 	for rows.Next() {
-		var project *pb.Project
+		project := &pb.Project{}
 		err = rows.Scan(&project.ProjectID, &project.ProjectName, &project.ChainID, &project.RaffleContract)
 		if err != nil {
 			log.Error(err, "get projects scan error")
