@@ -42,7 +42,7 @@ func (p ProjectService) CreateProject(ctx context.Context, request *pb.CreatePro
 	n, _ := result.RowsAffected()
 	if n == 1 {
 		response := &pb.CreateProjectResponse{}
-		query = fmt.Sprintf("SELECT id FROM project WHERE name = '%s', chain_id = %d, raffle_contract = '%s'", request.ProjectName, request.ChainID, request.RaffleContract)
+		query = fmt.Sprintf("SELECT id FROM project WHERE name = '%s' AND chain_id = %d AND raffle_contract = '%s'", request.ProjectName, request.ChainID, request.RaffleContract)
 		if err = db.QueryRowContext(ctx, query).Scan(&response.ProjectID); err != nil {
 			return nil, status.Errorf(codes.Internal, err.Error())
 		}
@@ -82,7 +82,7 @@ func (p ProjectService) GetProject(ctx context.Context, request *pb.GetProjectRe
 }
 
 // GetAllProjects returns all project list in project table
-func (p ProjectService) GetAllProjects(ctx context.Context, empty *pb.Empty) (*pb.GetAllProjectResponse, error) {
+func (p ProjectService) GetAllProjects(ctx context.Context, _ *pb.Empty) (*pb.GetAllProjectResponse, error) {
 	db, err := database.Connect()
 	if err != nil {
 		log.Error(err, "database connection error")
