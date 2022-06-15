@@ -28,7 +28,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
         - name: server
-          image: changjjjjjjjj/raffle-project-service:v0.0.1-alpha
+          image: changjjjjjjjj/raffle-project-service:v0.1.0
           imagePullPolicy: Always
           ports:
             - containerPort: 3550

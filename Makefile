@@ -1,5 +1,5 @@
 # Current  Version
-VERSION ?= v0.0.1-alpha
+VERSION ?= v0.1.0
 REGISTRY ?= changjjjjjjjj
 
 # Image URL to use all building/pushing image targets
