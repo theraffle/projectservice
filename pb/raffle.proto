@@ -1,0 +1,154 @@
+/*
+ Copyright 2022 The Raffle Authors
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+*/
+
+syntax = "proto3";
+
+package pb;
+option go_package = "github.com/theraffle/pb";
+
+// -----------------User Service--------------------
+
+service UserService {
+  rpc CreateUser (CreateUserRequest) returns (LoginUserResponse) {}
+  rpc GetUser (GetUserRequest) returns (GetUserResponse) {}
+  rpc GetUserWallet (GetUserWalletRequest) returns (GetUserWalletResponse) {}
+  rpc GetUserProject (GetUserProjectRequest) returns (GetUserProjectResponse) {}
+  rpc UpdateUser (UpdateUserRequest) returns (GetUserResponse) {}
+  rpc CreateUserWallet (CreateUserWalletRequest) returns (Empty) {}
+  rpc CreateUserProject (CreateUserProjectRequest) returns (Empty) {}
+  rpc LoginUser (LoginUserRequest) returns (LoginUserResponse) {}
+  rpc LogoutUser (LogoutUserRequest) returns (Empty) {}
+}
+
+message CreateUserRequest {
+  string userID = 1;
+  LoginType loginType = 2;
+}
+
+message GetUserRequest {
+  int64 userID = 1;
+}
+
+message GetUserResponse {
+  int64 userID = 1;
+  LoginType loginType = 2;
+  string telegramID = 3;
+  string discordID = 4;
+  string twitterID = 5;
+}
+
+message UpdateUserRequest {
+  int64 userID = 1;
+  string telegramID = 2;
+  string discordID = 3;
+  string twitterID = 4;
+}
+
+message UserWallet{
+  int64 userID = 1;
+  int64 chainID = 2;
+  string address = 3;
+}
+
+message CreateUserWalletRequest {
+  UserWallet wallet = 1;
+}
+
+message GetUserWalletRequest {
+  int64 userID = 1;
+}
+
+message GetUserWalletResponse {
+  repeated UserWallet wallets = 1;
+}
+
+message CreateUserProjectRequest {
+  int64 userID = 1;
+  int64 projectID = 2;
+  int64 chainID = 3;
+  string address = 4;
+}
+
+message GetUserProjectRequest {
+  int64 userID = 1;
+}
+
+message GetUserProjectResponse {
+  repeated int64 projects = 1;
+}
+
+message LoginUserRequest {
+  string userID = 1;
+  LoginType loginType = 2;
+}
+
+message LoginUserResponse {
+  int64 userID = 1;
+}
+
+message LogoutUserRequest {
+  int64 userID = 1;
+}
+
+message Empty {}
+
+enum LoginType {
+  DISCORD = 0;
+  TELEGRAM = 1;
+  TWITTER = 2;
+}
+
+// -----------------Project Service--------------------
+
+service ProjectService {
+  rpc CreateProject (CreateProjectRequest) returns (CreateProjectResponse) {}
+  rpc GetProject (GetProjectRequest) returns (GetProjectResponse) {}
+  rpc GetAllProjects (Empty) returns (GetAllProjectResponse) {}
+  rpc UpdateProject (UpdateProjectRequest) returns (GetProjectResponse) {}
+}
+
+message Project{
+  int64 projectID = 1;
+  string projectName = 2;
+  int64 chainID = 3;
+  string raffleContract = 4;
+}
+
+message CreateProjectRequest {
+  string projectName = 1;
+  int64 chainID = 2;
+  string raffleContract = 3;
+}
+
+message CreateProjectResponse {
+  int64 projectID = 1;
+}
+
+message GetProjectRequest {
+  int64 projectID = 1;
+}
+
+message GetProjectResponse {
+  Project project = 1;
+}
+
+message GetAllProjectResponse {
+  repeated Project projects = 1;
+}
+
+message UpdateProjectRequest {
+  int64 projectID = 1;
+}
